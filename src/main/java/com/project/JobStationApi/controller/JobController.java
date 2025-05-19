@@ -1,6 +1,8 @@
 package com.project.JobStationApi.controller;
 
 import com.project.JobStationApi.model.Job;
+import com.project.JobStationApi.service.JobService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/jobs")
 public class JobController {
 
+    @Autowired
+    JobService jobService;
+
     @GetMapping
     public ResponseEntity<String> getAllJobs(){
-
+        jobService.getAllJobs();
         return new ResponseEntity<>("all jobs", HttpStatus.OK);
     }
 
