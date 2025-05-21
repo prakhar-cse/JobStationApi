@@ -4,9 +4,9 @@ import com.project.JobStationApi.model.Job;
 import com.project.JobStationApi.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JobService {
@@ -16,6 +16,10 @@ public class JobService {
 
     public List<Job> getAllJobs(){
         return jobRepository.findAll();
+    }
+
+    public Job getJobById(int jobId){
+        return jobRepository.findById(jobId).orElseThrow();
     }
 
     public Job addJob(Job job){
