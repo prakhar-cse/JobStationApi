@@ -1,5 +1,6 @@
 package com.project.JobStationApi.service;
 
+import com.project.JobStationApi.exception.JobNotFoundException;
 import com.project.JobStationApi.model.Job;
 import com.project.JobStationApi.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,10 @@ public class JobService {
     }
 
     public Job getJobById(int jobId){
-        return jobRepository.findById(jobId).orElseThrow();
+        if(jobId <= 0){
+            throw new IllegalArgumentException("Job Id must be valid");
+        }
+        return jobRepository.findById(jobId).orElseThrow(()-> new JobNotFoundException("Job"+jobId+" is not present"));
     }
 
     public Job addJob(Job job){
