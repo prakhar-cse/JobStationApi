@@ -30,4 +30,10 @@ public class JobService {
         return jobRepository.save(job);
     }
 
+    public void deleteJobById(int jobId){
+        if(jobId <= 0){
+            throw new IllegalArgumentException("Job Id must be valid");
+        }
+        jobRepository.deleteById(jobId);
+    }
 }
