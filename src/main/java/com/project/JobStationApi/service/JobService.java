@@ -4,6 +4,7 @@ import com.project.JobStationApi.exception.JobNotFoundException;
 import com.project.JobStationApi.model.Job;
 import com.project.JobStationApi.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,5 +36,20 @@ public class JobService {
             throw new IllegalArgumentException("Job Id must be valid");
         }
         jobRepository.deleteById(jobId);
+    }
+
+    public Job updateJob(int job_id, Job newJobBody) {
+        Optional<Job> oldJob = jobRepository.findById(job_id);
+        if(oldJob.isEmpty()){
+            ResponseEntity.notFound();
+        }
+
+        Job JobObj = oldJob.get();
+        JobObj.setJobLocation(newJobBody.getJobLocation());
+        JobObj.setJobTitle(newJobBody.getJobTitle());
+        JobObj.setJobDescription(newJobBody.getJobDescription());
+
+        jobRepository.save(JobObj);
+        return JobObj;
     }
 }

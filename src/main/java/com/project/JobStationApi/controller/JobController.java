@@ -36,9 +36,9 @@ public class JobController {
 
 
     @PutMapping("/{job_id}")
-    public ResponseEntity<String> updateJob(@RequestBody Job job_body){
-
-        return new ResponseEntity<>("Job updated", HttpStatus.OK);
+    public ResponseEntity<Job> updateJob(@PathVariable int job_id, @RequestBody Job new_job_body){
+        Job newJob = jobService.updateJob(job_id,new_job_body);
+        return new ResponseEntity<>(newJob, HttpStatus.OK);
     }
 
     @PatchMapping("/{job_id}")
