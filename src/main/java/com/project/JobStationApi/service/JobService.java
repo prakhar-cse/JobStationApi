@@ -24,7 +24,7 @@ public class JobService {
         if(jobId <= 0){
             throw new IllegalArgumentException("Job Id must be valid");
         }
-        return jobRepository.findById(jobId).orElseThrow(()-> new JobNotFoundException("Job"+jobId+" is not present"));
+        return jobRepository.findById(jobId).orElseThrow(()-> new JobNotFoundException("Job "+jobId+" is not present"));
     }
 
     public Job addJob(Job job){
@@ -34,6 +34,9 @@ public class JobService {
     public void deleteJobById(int jobId){
         if(jobId <= 0){
             throw new IllegalArgumentException("Job Id must be valid");
+        }
+        if(! jobRepository.existsById(jobId)){
+            throw new JobNotFoundException("Job "+jobId+" is not present");
         }
         jobRepository.deleteById(jobId);
     }
