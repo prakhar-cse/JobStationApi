@@ -14,10 +14,21 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth->auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        // Swagger endpoints - allow public access
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+
+                        // Your secure endpoints
+                        .requestMatchers("/api/**").authenticated()
+
+                        // Any other request
+                        .anyRequest().permitAll()
+                )
                 .httpBasic(Customizer.withDefaults());
-
-
         return http.build();
     }
 }
