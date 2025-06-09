@@ -10,25 +10,20 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Swagger endpoints - allow public access
                         .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
-
-                        // Your secure endpoints
-                        .requestMatchers("/api/**").authenticated()
-
-                        // Any other request
-                        .anyRequest().permitAll()
+                                "/swagger-ui/**",        // for Swagger UI static files
+                                "/v3/api-docs/**",       // for OpenAPI spec
+                                "/swagger-ui.html"       // for main Swagger UI page (legacy URL)
+                        ).permitAll()                // allow without auth
+                        .anyRequest().authenticated() // everything else requires Basic Auth
                 )
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults()); // enable Basic Auth
+
         return http.build();
     }
+
 }
